@@ -1,7 +1,7 @@
 // Fallback for using MaterialIcons on Android and web.
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight, SymbolViewProps } from 'expo-symbols';
+import { SymbolViewProps, SymbolWeight } from 'expo-symbols';
 import { ComponentProps } from 'react';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
@@ -18,6 +18,32 @@ const MAPPING = {
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'chart.bar.fill': 'bar-chart',
+  'creditcard.fill': 'credit-card',
+  'banknote.fill': 'attach-money',
+  'arrow.left': 'arrow-back',
+  'sparkles': 'auto-awesome',
+  'camera.fill': 'camera-alt',
+  'doc.text.fill': 'description',
+  'plus': 'add',
+  'gearshape': 'settings',
+  'chart.bar': 'bar-chart',
+  'dollarsign': 'attach-money',
+  'house': 'home',
+  'checkmark': 'check',
+  'chevron.down': 'keyboard-arrow-down',
+  'magnifyingglass': 'search',
+  'chevron.left': 'chevron-left',
+  'line.3.horizontal.decrease': 'filter-alt',
+  'slider.horizontal.3': 'tune',
+  'square.and.pencil': 'edit',
+  'arrow.up.doc': 'file-upload',
+  'keyboard': 'keyboard',
+  'person.2': 'group',
+  'eye': 'visibility',
+  'eye.slash': 'visibility-off',
+  'calendar': 'calendar-today',
+  'delete.left': 'backspace',
 } as IconMapping;
 
 /**
