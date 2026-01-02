@@ -240,6 +240,7 @@ export default function StatsScreen() {
                                 backgroundColor: '#10b981',
                                 borderBottomLeftRadius: 0,
                                 borderBottomRightRadius: 0,
+                                marginBottom: 2,
                               }
                             ]} />
                           )}
@@ -253,6 +254,7 @@ export default function StatsScreen() {
                                 backgroundColor: '#ef4444',
                                 borderTopLeftRadius: 0,
                                 borderTopRightRadius: 0,
+                                marginTop: 2,
                               }
                             ]} />
                           )}
