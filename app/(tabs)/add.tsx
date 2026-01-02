@@ -109,7 +109,8 @@ export default function AddScreen() {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      handleAnalyze(result.assets[0].base64);
+      // In manual mode, we just attach the image without OCR
+      // handleAnalyze(result.assets[0].base64);
     } else if (params.mode === 'upload') {
       // If cancelled in upload mode, go back
       router.back();
