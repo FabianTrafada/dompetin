@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     borderTopWidth: 1,
-    borderStyle: 'dashed',
+    borderStyle: 'solid',
     zIndex: 0,
   },
   chartScrollContent: {
