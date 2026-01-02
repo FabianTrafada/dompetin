@@ -98,13 +98,12 @@ export default function StatsScreen() {
     const stat = dailyStats.find(s => s.day === dateStr);
     return {
       day,
-      income: stat?.income || 0,
-      expense: stat?.expense || 0,
+      value: (stat?.income || 0) - (stat?.expense || 0),
     };
   });
 
-  const maxIncome = Math.max(...chartData.map(d => d.income), 100); // Default to 100 if no data
-  const maxExpense = Math.max(...chartData.map(d => d.expense), 100);
+  const maxIncome = Math.max(...chartData.map(d => d.value > 0 ? d.value : 0), 100); // Default to 100 if no data
+  const maxExpense = Math.max(...chartData.map(d => d.value < 0 ? Math.abs(d.value) : 0), 100);
 
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -225,36 +224,36 @@ export default function StatsScreen() {
               >
                 {chartData.map((data, index) => {
                   const maxBarHeight = 80;
-                  const incomeHeight = (data.income / maxIncome) * maxBarHeight;
-                  const expenseHeight = (data.expense / maxExpense) * maxBarHeight;
+                  const isPositive = data.value >= 0;
+                  const height = isPositive 
+                    ? (data.value / maxIncome) * maxBarHeight 
+                    : (Math.abs(data.value) / maxExpense) * maxBarHeight;
                   
                   return (
                     <View key={index} style={styles.barWrapper}>
                       <View style={styles.barContainer}>
                         <View style={styles.barHalfTop}>
-                          {data.income > 0 && (
+                          {isPositive && data.value !== 0 && (
                             <View style={[
                               styles.bar, 
                               { 
-                                height: Math.max(incomeHeight, 2), 
+                                height: Math.max(height, 2), 
                                 backgroundColor: '#10b981',
                                 borderBottomLeftRadius: 0,
                                 borderBottomRightRadius: 0,
-                                marginBottom: 2,
                               }
                             ]} />
                           )}
                         </View>
                         <View style={styles.barHalfBottom}>
-                          {data.expense > 0 && (
+                          {!isPositive && data.value !== 0 && (
                             <View style={[
                               styles.bar, 
                               { 
-                                height: Math.max(expenseHeight, 2), 
+                                height: Math.max(height, 2), 
                                 backgroundColor: '#ef4444',
                                 borderTopLeftRadius: 0,
                                 borderTopRightRadius: 0,
-                                marginTop: 2,
                               }
                             ]} />
                           )}
@@ -444,7 +443,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     borderTopWidth: 1,
-    borderStyle: 'solid',
+    borderStyle: 'dashed',
     zIndex: 0,
   },
   chartScrollContent: {
