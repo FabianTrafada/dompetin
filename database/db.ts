@@ -283,34 +283,19 @@ class Database {
   async getDailyStats(startDate: string, endDate: string): Promise<{ day: string; income: number; expense: number }[]> {
     if (!this.db) await this.init();
 
-    const transactions = await this.getTransactionsByDateRange(startDate, endDate);
-    
-    const stats = new Map<string, { income: number; expense: number }>();
+    const query = `
+      SELECT 
+        strftime('%Y-%m-%d', date, 'localtime') as day,
+        SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) as income,
+        SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) as expense
+      FROM transactions 
+      WHERE date BETWEEN ? AND ?
+      GROUP BY day
+      ORDER BY day
+    `;
 
-    for (const t of transactions) {
-      const date = new Date(t.date);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const dateStr = `${year}-${month}-${day}`;
-
-      if (!stats.has(dateStr)) {
-        stats.set(dateStr, { income: 0, expense: 0 });
-      }
-      
-      const current = stats.get(dateStr)!;
-      if (t.type === 'income') {
-        current.income += t.amount;
-      } else {
-        current.expense += t.amount;
-      }
-    }
-
-    return Array.from(stats.entries()).map(([day, stat]) => ({
-      day,
-      income: stat.income,
-      expense: stat.expense
-    })).sort((a, b) => a.day.localeCompare(b.day));
+    const rows = await this.db!.getAllAsync<{ day: string; income: number; expense: number }>(query, [startDate, endDate]);
+    return rows;
   }
 
   // Category operations
